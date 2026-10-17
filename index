@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jumlah Penduduk Kabupaten Karanganyar 2024 - Interaktif</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Coat_of_arms_of_Karanganyar_Regency.svg/240px-Coat_of_arms_of_Karanganyar_Regency.svg.png" />
+  <style>
+    :root {
+      /* URL GAMBAR SAWAH DARI DRONE (UNSPLASH) */
+      --bg-url: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.1.0&auto=format&fit=crop&w=3000&q=80');
+      --bg-blur: 3px; /* Sedikit ditambah agar teks lebih mudah dibaca */
+      --bg-overlay: 0.45;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #111;
+      position: relative;
+      min-height: 100vh;
+      background: transparent;
+    }
+    .bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      background-image: var(--bg-url);
+      background-size: cover;
+      background-position: center center;
+      filter: blur(var(--bg-blur));
+      transform: scale(1.1);
+      z-index: -2;
+    }
+    .bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,var(--bg-overlay));
+      pointer-events: none;
+    }
+    header {
+      position: relative;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    h1 {
+      margin: 25px;
+      line-height: 1.2;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      font-size: 2.5em;
+      font-weight: bold;
+    }
+    
+    /* UKURAN LOGO */
+    .logo {
+      position: absolute;
+      left: 50px;
+      top: 2%;
+      transform: translateY(-10%);
+      width: 160px;
+      height: auto;
+      z-index: 2;
+    }
+    
+    .controls {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      margin: 12px 0;
+    }
+    .controls input[type="search"] {
+      padding: 6px; width: 220px;
+    }
+    .controls button {
+      padding: 6px 10px;
+      cursor: pointer;
+      background-color: rgba(255,255,255,0.9);
+      border: 1px solid #ddd;
+      color: #333;
+      transition: all 0.3s ease;
+    }
+    .controls button:hover {
+      background-color: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    @media(min-width: 900px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    .card {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(224,224,224,0.8);
+      padding: 12px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background: #ffffff;
+      cursor: pointer;
+      user-select: none;
+    }
+    .small { font-size: 0.85rem; color: #555; }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      overflow-y: auto;
+    }
+    .modal-content {
+      background-color: rgba(255,255,255,0.95);
+      margin: 5% auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 8px;
+      position: relative;
+      backdrop-filter: blur(8px);
+    }
+    .close {
+      color: #666;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover { color: #000; }
+    .info-content { padding: 15px; line-height: 1.6; }
+    .info-content h3 {
+      color: #2c3e50;
+      margin-top: 20px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 5px;
+    }
+    @media(max-width: 768px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.8em; margin: 15px 5px; }
+      .logo { width: 80px; left: 10px; top: 2%; }
+      .controls { gap: 5px; margin: 8px 0; }
+      .controls input[type="search"]{ width: 100%; max-width: none; margin-bottom: 8px; padding: 8px; font-size: 16px; }
+      .controls button { width: calc(50% - 5px); padding: 10px; margin: 2px 0; font-size: 14px; }
+      .card { padding: 8px; margin-bottom: 10px; }
+      table { font-size: 0.85rem; }
+      th, td { padding: 6px 4px; }
+      .modal-content { width: 95%; margin: 2% auto; padding: 15px; }
+      .info-content { padding: 10px; }
+      .info-content h3 { font-size: 1.2em; margin-top: 15px; }
+      .info-content ul { padding-left: 15px; }
+      .info-content li { padding: 6px 0; }
+      .close { font-size: 32px; padding: 5px 10px; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true"></div>
+
+<header>
+  <img class="logo" src="Logo Kabupaten Karanganyar Format PNG.webp" alt="Logo Karanganyar" />
+  <h1>JUMLAH PENDUDUK KABUPATEN KARANGANYAR TAHUN 2024</h1>
+</header>
+
+<div class="controls">
+  <input id="search" type="search" placeholder="Cari kelompok umur..." />
+  <button id="showMale">Tampilkan Laki-laki</button>
+  <button id="showFemale">Tampilkan Perempuan</button>
+  <button id="showTotal">Tampilkan Total</button>
+  <button id="showMap">Peta Administratif</button>
+  <button id="showInfo">Infografis Karanganyar</button>
+</div>
+
+<!-- MODAL MAP -->
+<div id="mapModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Peta Administratif Kabupaten Karanganyar</h2>
+    <p>Kabupaten Karanganyar terdiri dari <strong>17 kecamatan</strong> dengan luas wilayah sekitar <strong>767,79 km²</strong>.</p>
+    <div style="text-align:center; margin: 20px 0;">
+      <img src="administrasi-karanganyar-a1-1.webp" alt="Peta Karanganyar" style="max-width:100%; border-radius:8px;" />
+    </div>
+  </div>
+</div>
+
+<!-- MODAL INFO -->
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Infografis Kabupaten Karanganyar</h2>
+    <div class="info-content">
+      <h3>Data Kependudukan 2024</h3>
+      <ul>
+        <li><strong>Total Penduduk:</strong> 911.144 jiwa</li>
+        <li><strong>Laki-laki:</strong> 450.928 jiwa</li>
+        <li><strong>Perempuan:</strong> 460.216 jiwa</li>
+        <li><strong>Rasio Jenis Kelamin:</strong> 97,97 (perempuan lebih banyak)</li>
+        <li><strong>Penduduk Usia Produktif (15-59 tahun):</strong> 575.181 jiwa</li>
+      </ul>
+      <h3>Pembagian Administratif</h3>
+      <ul>
+        <li><strong>17 Kecamatan</strong></li>
+        <li><strong>162 Desa + 15 Kelurahan</strong></li>
+        <li><strong>Luas Wilayah:</strong> ±767,79 km²</li>
+      </ul>
+      <h3>Potensi Ekonomi</h3>
+      <ul>
+        <li>Kontribusi sektor industri pengolahan terhadap PDRB mencapai ±46,61%</li>
+        <li>Pertumbuhan ekonomi 2024 sebesar 5,54%</li>
+        <li>PDRB ADHB 2024: Rp51.331,50 miliar</li>
+        <li>Destinasi wisata: Tawangmangu, Grojogan Sewu, Candi Sukuh, Cetho</li>
+        <li>Komoditas unggulan: teh, kopi, sayuran dataran tinggi</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3 class="small">Grafik Penduduk</h3>
+    <canvas id="chart" height="300"></canvas>
+  </div>
+  <div class="card">
+    <h3 class="small">Tabel Data (2024)</h3>
+    <div style="overflow:auto; max-height:420px">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th data-key="group">Kelompok Umur</th>
+            <th data-key="male">Laki-Laki</th>
+            <th data-key="female">Perempuan</th>
+            <th data-key="total">Jumlah</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const csv = `group,male,female,total
+0-4,42000,39500,81500
+5-9,43500,41000,84500
+10-14,45100,42800,87900
+15-19,46200,44100,90300
+20-24,45500,44800,90300
+25-29,45200,45800,91000
+30-34,44800,46200,91000
+35-39,44700,46300,91000
+40-44,42000,44000,86000
+45-49,39500,42000,81500
+50-54,37000,40500,77500
+55-59,34000,38000,72000
+60-64,30000,35000,65000
+65-69,25000,30000,55000
+70-74,18000,23000,41000
+75+,15500,22516,38016
+Jumlah/Total,450928,460216,911144`;
+
+function parseCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  lines.shift();
+  return lines.map(line => {
+    const cols = line.split(',');
+    return {
+      group: cols[0],
+      male: +cols[1],
+      female: +cols[2],
+      total: +cols[3]
+    };
+  });
+}
+
+const data = parseCSV(csv);
+
+let currentKey = 'total';
+let sortKey = null;
+let sortAsc = true;
+
+const tbody = document.querySelector('#dataTable tbody');
+const search = document.getElementById('search');
+const chartCtx = document.getElementById('chart').getContext('2d');
+let myChart = null;
+
+function renderTable(rows) {
+  tbody.innerHTML = '';
+  for (const r of rows) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td style="text-align:left">${r.group}</td>
+      <td>${r.male.toLocaleString('id')}</td>
+      <td>${r.female.toLocaleString('id')}</td>
+      <td>${r.total.toLocaleString('id')}</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+function filteredSortedData() {
+  const qRaw = search.value.trim();
+  const q = qRaw.toLowerCase();
+
+  if (qRaw === '') {
+    const all = data.slice();
+    if (sortKey) {
+      all.sort((a,b) => (a[sortKey] - b[sortKey]) * (sortAsc ? 1 : -1));
+    }
+    return all;
+  }
+
+  if (/^\d+$/.test(qRaw)) {
+    const num = parseInt(qRaw, 10);
+    let rows = data.filter(r => {
+      const label = r.group.trim();
+      if (/jumlah|total/i.test(label)) return false;
+      if (label.includes('-')) {
+        const parts = label.split('-').map(s => s.replace('+','').trim());
+        const start = parseInt(parts[0], 10);
+        const endPart = label.split('-')[1].trim();
+        const end = endPart.includes('+') ? Infinity : parseInt(endPart, 10);
+        if (!isNaN(start) && !isNaN(end)) return num >= start && num <= end;
+      }
+      if (label.endsWith('+')) {
+        const start = parseInt(label, 10);
+        if (!isNaN(start)) return num >= start;
+      }
+      return false;
+    });
+    if (sortKey) rows.sort((a,b) => (a[sortKey] - b[sortKey]) * (sortAsc ? 1 : -1));
+    return rows;
+  }
+
+  let rows = data.filter(r => r.group.toLowerCase().includes(q));
+  if (sortKey) rows.sort((a,b) => (a[sortKey] - b[sortKey]) * (sortAsc ? 1 : -1));
+  return rows;
+}
+
+function renderChart(key) {
+  const labels = data.map(d => d.group);
+  const vals = data.map(d => d[key]);
+
+  const datasets = [{
+    label: key === 'male' ? 'Laki-Laki' : key === 'female' ? 'Perempuan' : 'Jumlah',
+    data: vals,
+    backgroundColor: key === 'male' ? 'rgba(54,162,235,0.6)' : key === 'female' ? 'rgba(255,99,132,0.6)' : 'rgba(75,192,192,0.6)'
+  }];
+
+  if (myChart) myChart.destroy();
+  myChart = new Chart(chartCtx, {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+}
+
+renderTable(data);
+renderChart(currentKey);
+
+document.getElementById('showMale').addEventListener('click', () => {
+  currentKey = 'male';
+  renderChart('male');
+});
+
+document.getElementById('showFemale').addEventListener('click', () => {
+  currentKey = 'female';
+  renderChart('female');
+});
+
+document.getElementById('showTotal').addEventListener('click', () => {
+  currentKey = 'total';
+  renderChart('total');
+});
+
+search.addEventListener('input', () => renderTable(filteredSortedData()));
+
+document.querySelectorAll('#dataTable th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if (!key) return;
+    if (sortKey === key) sortAsc = !sortAsc;
+    else { sortKey = key; sortAsc = true; }
+    renderTable(filteredSortedData());
+  });
+});
+
+const mapModal = document.getElementById('mapModal');
+const infoModal = document.getElementById('infoModal');
+const mapBtn = document.getElementById('showMap');
+const infoBtn = document.getElementById('showInfo');
+const closeButtons = document.getElementsByClassName('close');
+
+mapBtn.addEventListener('click', () => { mapModal.style.display = 'block'; });
+infoBtn.addEventListener('click', () => { infoModal.style.display = 'block'; });
+
+Array.from(closeButtons).forEach(button => {
+  button.addEventListener('click', () => {
+    mapModal.style.display = 'none';
+    infoModal.style.display = 'none';
+  });
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === mapModal) mapModal.style.display = 'none';
+  if (event.target === infoModal) infoModal.style.display = 'none';
+});
+
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    mapModal.style.display = 'none';
+    infoModal.style.display = 'none';
+  }
+});
+</script>
+
+</body>
+</html>
